@@ -2,6 +2,7 @@
 from tkinter import *
 from EZcipher import *
 from Cesar import *
+from Vigenere2 import *
 from steganographie import *
 
 
@@ -71,12 +72,16 @@ class menu_chiffrer_texte:
         self.TextTexteAChiffrer = Text(self.frameContenu, height=5, width=50)
         self.labelCle = Label(self.frameContenu, text='Clé')
         self.EntryCle = Entry(self.frameContenu, width=44)
-        self.ListBoxChiffrement = Listbox(self.frameContenu)
+        self.ListBoxChiffrement = Listbox(self.frameContenu, height=2)
         self.labelTexteSortie = Label(self.frameContenu, text='Sortie')
         self.TextTexteSortie = Text(self.frameContenu, height=5, width=50)
         self.boutonChiffrer = Button(self.frameContenu, text="Chiffrer", command=self.chiffrer_texte)
         self.boutonDechiffrer = Button(self.frameContenu, text="Déchiffrer", command=self.dechiffrer_texte)
-        
+        self.statut = StringVar()
+        self.labelStatut = Label(self.frameContenu ,textvariable=self.statut)
+        self.statut.set("Statut:")
+        self.labelInformations = Label(self.frameContenu, text="Informations: Les clef pour le chiffrment de César sont des nombres entiers", justify=LEFT)        
+
     def affichage(self):
         nettoyer_fenetre()
         global framePage
@@ -97,32 +102,80 @@ class menu_chiffrer_texte:
         self.TextTexteSortie.insert(END, "Texte chiffré")
         self.boutonChiffrer.grid(row=1,column=3, pady=5, sticky=N)
         self.boutonDechiffrer.grid(row=2,column=3, pady=5, sticky=N)
+        self.labelStatut.grid(row=6, column=0, columnspan=3, pady=5, padx=10, sticky=W)
+        self.labelInformations.grid(row=7, column=0, columnspan=4, pady=5, padx=10, sticky=W)
     
     def retour_menu_principal(self):
         global menu_principal
         menu_principal.affichage()
 
     def chiffrer_texte(self):
-        texteClair = self.TextTexteAChiffrer.get(1.0, END)
-        texteClair = texteClair[0:-1]   #le dernier caractère d'un Text est un saut de ligne, on le supprime
-        cle = self.EntryCle.get()
-        self.TextTexteSortie.delete(1.0, END)
-        #texteClair = texteClair.replace('\n', '')
-        texteClair = texteClair[0:-1]
-        TexteChiffre = cesar(texteClair, int(cle), 3)
+        selectionAlgo = None
+        try:
+            selectionAlgo = self.ListBoxChiffrement.curselection()[0]
+        except Exception as e:
+            self.statut.set("Statut: Veuillez selectionner un algorithme de chiffrement!")
+
+        if selectionAlgo != None:
+            texteClair = self.TextTexteAChiffrer.get(1.0, END)
+            if texteClair[-1] == "\n":
+                texteClair = texteClair[0:-1]
+            cle = self.EntryCle.get()
+            if selectionAlgo == 0:	#Cesar
+                if str.isnumeric(cle):
+                    try:
+                        self.TextTexteSortie.delete(1.0, END)
+                        texteChiffre = cesar(texteClair, int(cle), 4)
+                        self.TextTexteSortie.insert(END, texteChiffre)
+                        self.statut.set("Statut: Chiffrement effectué!")
+                    except ValueError as e:
+                        self.statut.set("Statut: Caractère invalide!")
+                    
+                else:
+                    self.statut.set("Statut: Clé invalide!")
+            elif selectionAlgo == 1:			#Vigenère
+                try:
+                    texteChiffre = vigenereChiffre(texteClair, cle, 4)
+                    self.TextTexteSortie.delete(1.0, END)
+                    self.TextTexteSortie.insert(END, texteChiffre)
+                    self.statut.set("Statut: Chiffrement effectué!")
+                except ValueError as e:
+                    self.statut.set("Statut: Caractère invalide!")
         
-        self.TextTexteSortie.insert(END, TexteChiffre)
+        
     
     def dechiffrer_texte(self):
-        texteClair = self.TextTexteAChiffrer.get(1.0, END)
-        #texteClair = texteClair[0:-1]   #le dernier caractère d'un Text est un saut de ligne, on le supprime
-        cle = self.EntryCle.get()
-        self.TextTexteSortie.delete(1.0, END)
-        #texteClair = texteClair.replace('\n', '')
-        texteClair = texteClair[0:-1]
-        TexteChiffre = cesar(texteClair, -int(cle), 3)
-        
-        self.TextTexteSortie.insert(END, TexteChiffre)
+        selectionAlgo = None
+        try:
+            selectionAlgo = self.ListBoxChiffrement.curselection()[0]
+        except Exception as e:
+            self.statut.set("Statut: Veuillez selectionner un algorithme de chiffrement!")
+
+        if selectionAlgo != None:
+            texteChiffre = self.TextTexteAChiffrer.get(1.0, END)
+            if texteChiffre[-1] == "\n":
+                texteChiffre = texteChiffre[0:-1]
+            cle = self.EntryCle.get()
+            if selectionAlgo == 0:	#Cesar
+                if str.isnumeric(cle):
+                    try:
+                        self.TextTexteSortie.delete(1.0, END)
+                        texteClair = cesar(texteChiffre, -int(cle), 4)
+                        self.TextTexteSortie.insert(END, texteClair)
+                        self.statut.set("Statut: Déchiffrement effectué!")
+                    except ValueError as e:
+                        self.statut.set("Statut: Erreur lors du déchiffrement!")
+                    
+                else:
+                    self.statut.set("Statut: Clé invalide!")
+            elif selectionAlgo == 1:			#Vigenère
+                try:
+                    texteClair = vigenereDechiffre(texteChiffre, cle, 4)
+                    self.TextTexteSortie.delete(1.0, END)
+                    self.TextTexteSortie.insert(END, texteClair)
+                    self.statut.set("Statut: Déchiffrement effectué!")
+                except ValueError as e:
+                    self.statut.set("Statut: Erreur lors du déchiffrement!")
 
 class menu_cryptographie_asymetrique:
     def __init__(self):

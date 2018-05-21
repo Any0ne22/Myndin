@@ -5,7 +5,8 @@ def cesar(phraseAChiffrer, decalage, alphabetChoisi): # def cesar ...
 	alphabet0 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 	alphabet1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
 	alphabet2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
-	alphabet3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' \n"
+	alphabet3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' "
+	alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[>]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ\n"
 	
 	alphabet = ""
 	if alphabetChoisi == 0 :
@@ -16,6 +17,8 @@ def cesar(phraseAChiffrer, decalage, alphabetChoisi): # def cesar ...
 		alphabet = alphabet2
 	elif alphabetChoisi == 3 :
 		alphabet = alphabet3
+	elif alphabetChoisi == 4 :
+        alphabet = alphabet4
 	else :
 		raise ValueError("Alphabet invalide")
 		

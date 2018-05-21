@@ -1,3 +1,6 @@
+#coding: utf-8
+#Denis L.
+
 def vigenereChiffre ( phraseAChiffrer, clef, alphabetChoisi) :
     alphabet0 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     alphabet1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
@@ -33,17 +36,7 @@ def vigenereChiffre ( phraseAChiffrer, clef, alphabetChoisi) :
         numeroLettre += 1
 
     return sortie
-   
-   
-    lettreClef = clef[numeroCaractere % (tailleClef-1)] #
 
-
-   
-   
-   
-   
-chiffre = vigenereChiffre("Les ordinateurs c'est de la merde", "Théo", 4)
-print(chiffre)
    
 def vigenereDechiffre ( phraseChiffree, clef, alphabetChoisi) :
    
@@ -79,10 +72,3 @@ def vigenereDechiffre ( phraseChiffree, clef, alphabetChoisi) :
         sortie = sortie + lettreD #Ajouter la dernière lettre à la phrase chiffrée
         numeroLettre += 1
     return sortie
-    
-   
-dechiffre = vigenereDechiffre(chiffre, "Théo", 4)
-print(dechiffre)
-   
-
-

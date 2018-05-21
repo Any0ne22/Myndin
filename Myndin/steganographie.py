@@ -18,7 +18,7 @@ def steganographie_ecrire(cheminImage, texteACacher):
         
         chaineBinaire = ""
         for i in range(0, len(tableauCaracteres)):
-            chaineBinaire += bin(tableauCaracteres[i])[2:].zfill(8)
+            chaineBinaire += bin(tableauCaracteres[i])[2:].zfill(8)	#Convertion en binaire
 
         
         if (tailleImage >= len(tableauCaracteres)):
@@ -36,7 +36,7 @@ def steganographie_ecrire(cheminImage, texteACacher):
                         bleu = pixel[2]
                     
                     
-                        rouge = rouge - (rouge%2)
+                        rouge = rouge - (rouge%2)	#On met le dernier bit du pixel à 0
                         rouge = rouge + int(chaineBinaire[x])
                         x = x + 1
                         if (x < len(chaineBinaire)):
@@ -52,7 +52,7 @@ def steganographie_ecrire(cheminImage, texteACacher):
                     
             image.save(cheminImage)
             image.close()
-            return len(tableauCaracteres), tailleImage
+            return len(tableauCaracteres)*8, tailleImage
         else:
             image.close()
             raise ValueError("Texte à cacher trop long")
@@ -68,7 +68,7 @@ def steganographie_lire(cheminImage):
         
             
         chaineBinaire = ""
-        for l in range(0, ligne):
+        for l in range(0, ligne):		#On parcours les pixels de l'image
             for c in range(0, colonne):
                 pixel = image.getpixel((c,l))
                         
@@ -76,7 +76,7 @@ def steganographie_lire(cheminImage):
                 vert = pixel[1]
                 bleu = pixel[2]
                 
-                chaineBinaire += (str(rouge%2) + str(vert%2)+ str(bleu%2))
+                chaineBinaire += (str(rouge%2) + str(vert%2)+ str(bleu%2)) #On recupère le dernier bit de chaque pixel
             
         tableauOctets = []              
         for i in range(0, int((len(chaineBinaire) - len(chaineBinaire)%8)/8)):		#Conversion binaire vers décimal optimisée (gain de temps pour le calcul)

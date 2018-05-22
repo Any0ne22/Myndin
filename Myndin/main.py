@@ -80,7 +80,7 @@ class menu_chiffrer_texte:
         self.statut = StringVar()
         self.labelStatut = Label(self.frameContenu ,textvariable=self.statut)
         self.statut.set("Statut:")
-        self.labelInformations = Label(self.frameContenu, text="Informations: Les clef pour le chiffrment de César sont des nombres entiers", justify=LEFT)        
+        self.labelInformations = Label(self.frameContenu, text="Informations: Les clef pour le chiffrement de César sont des nombres entiers", justify=LEFT)        
 
     def affichage(self):
         nettoyer_fenetre()
@@ -305,7 +305,7 @@ class menu_steganographie:
         self.statut = StringVar()
         self.labelStatut = Label(self.frameContenu ,textvariable=self.statut)
         self.statut.set("Statut:")
-        self.labelInformations = Label(self.frameContenu, text="\n\nInformations: la lecture ou l'écriture des données peut prendre plusieurs secondes selon la taille de l'image.\nLes images utilisant la transparence alpha peuvent être altérées par le programme.", justify=LEFT)
+        self.labelInformations = Label(self.frameContenu, text="\n\nInformations: La lecture ou l'écriture des données peut prendre plusieurs secondes selon la taille de l'image.\nLes images utilisant la transparence alpha peuvent être altérées par le programme.", justify=LEFT)
 
         self.boutonEcrire = Button(self.frameContenu, text="Enregister données", command=self.ecrire_donnees)
         self.boutonLire = Button(self.frameContenu, text="Lire données", command=self.lire_donnees)
@@ -349,7 +349,7 @@ class menu_steganographie:
             donnees = steganographie_lire(lienImage)
             self.TextDonnees.delete(1.0, END)
             self.TextDonnees.insert(END, donnees)
-            self.statut.set("Statut: données lues")
+            self.statut.set("Statut: Données lues")
         except ValueError as e:
             self.statut.set("Statut: Erreur (" + str(e) + ")")
 

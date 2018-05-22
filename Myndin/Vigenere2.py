@@ -6,7 +6,7 @@ def vigenereChiffre ( phraseAChiffrer, clef, alphabetChoisi) :
     alphabet1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
     alphabet2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
     alphabet3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' "
-    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[>]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ\n"
+    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø0ùúûüýþÿ\n"
 	
     if alphabetChoisi == 0 : #Condition
         alphabet = alphabet0
@@ -19,9 +19,9 @@ def vigenereChiffre ( phraseAChiffrer, clef, alphabetChoisi) :
     elif alphabetChoisi == 4 :
         alphabet = alphabet4
     else :
-        raise ValueError("Alphabet invalide") #
+        raise ValueError("Alphabet invalide") #Message d'erreure
 
-    sortie = "" #
+    sortie = "" #Definition de "sortie" comme une variable de texte
     
     numeroLettre = 0 #Donne la position de la lettre dans la phrase a chiffrer
     for lettre in phraseAChiffrer: #Boucle "pour chaque lettre dans la phrase à chiffrer"
@@ -44,7 +44,7 @@ def vigenereDechiffre ( phraseChiffree, clef, alphabetChoisi) :
     alphabet1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
     alphabet2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
     alphabet3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' "
-    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[>]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ\n"
+    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø0ùúûüýþÿ\n"
 
 
     if alphabetChoisi == 0 : #Condition
@@ -58,9 +58,9 @@ def vigenereDechiffre ( phraseChiffree, clef, alphabetChoisi) :
     elif alphabetChoisi == 4 :
         alphabet = alphabet4
     else :
-        raise ValueError("Alphabet invalide") #
+        raise ValueError("Alphabet invalide") #Message d'erreure
    
-    sortie = "" #
+    sortie = "" #Definition de "sortie" comme une variable de texte
     
     numeroLettre = 0 #Donne la position de la lettre dans la phrase chiffrée
     for lettreChiffree in phraseChiffree: #Boucle "pour chaque lettre dans la phrase chiffrée"

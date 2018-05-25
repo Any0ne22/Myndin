@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 from tkinter import *
 from EZcipher import *
 from Cesar import *

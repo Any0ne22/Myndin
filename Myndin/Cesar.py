@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf8
 #Denis L.
 
 def cesar(phraseAChiffrer, decalage, alphabetChoisi): # def cesar ...

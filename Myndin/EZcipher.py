@@ -1,10 +1,8 @@
+# coding: utf-8
 #EZcipher v0.1
 #Made by Tom Gouville
 #https://github.com/Any0ne22/EZcipher/
 
-#-*-coding:utf8;-*-
-#qpy:3
-#qpy:console
 import math
 import base64
 import os

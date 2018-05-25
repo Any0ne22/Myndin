@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 #Denis L.
 
 def vigenereChiffre ( phraseAChiffrer, clef, alphabetChoisi) :

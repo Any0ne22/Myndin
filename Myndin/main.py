@@ -6,7 +6,7 @@ from EZcipher import *
 from Cesar import *
 from Vigenere2 import *
 from steganographie import *
-
+import codecs
 
 #Fenetre de base   
 mainWindow = Tk()
@@ -33,7 +33,7 @@ class menu_principal:
         
         self.labelDeplacement=Label(self.frameContenu ,text='Bienvenue dans Myndin')
         self.boutonChiffrerTexte = Button(self.frameContenu, text="Chiffrer du texte", command=self.menu_chiffrer_texte)
-        self.boutonChiffrerFichier = Button(self.frameContenu, text="Chiffrer un fichier", command=0)
+        self.boutonChiffrerFichier = Button(self.frameContenu, text="Chiffrer un fichier", command=self.menu_chiffrer_fichier)
         self.boutonCryptoAsymetrique = Button(self.frameContenu, text="Cryptographie asymétrique", command=self.menu_cryptographie_asymetrique)
         self.boutonSteganographie = Button(self.frameContenu, text="Stéganographie", command=self.menu_steganographie)
 
@@ -52,6 +52,10 @@ class menu_principal:
     def menu_chiffrer_texte(self):
         global menu_chiffrer_texte
         menu_chiffrer_texte.affichage()
+
+    def menu_chiffrer_fichier(self):
+        global menu_chiffrer_fichier
+        menu_chiffrer_fichier.affichage()
     
     def menu_cryptographie_asymetrique(self):
         global menu_cryptographie_asymetrique
@@ -123,28 +127,30 @@ class menu_chiffrer_texte:
             if texteClair[-1] == "\n":
                 texteClair = texteClair[0:-1]
             cle = self.EntryCle.get()
-            if selectionAlgo == 0:	#Cesar
-                if str.isnumeric(cle):
+            cle = self.EntryCle.get()
+            if cle == "":
+                self.statut.set("Statut: veuillez entrer une clé!")
+            else:
+                if selectionAlgo == 0:	#Cesar
+                    if str.isnumeric(cle):
+                        try:
+                            self.TextTexteSortie.delete(1.0, END)
+                            texteChiffre = cesar(texteClair, int(cle), 4)
+                            self.TextTexteSortie.insert(END, texteChiffre)
+                            self.statut.set("Statut: Chiffrement effectué!")
+                        except ValueError as e:
+                            self.statut.set("Statut: Caractère invalide!")
+                    
+                    else:
+                        self.statut.set("Statut: Clé invalide!")
+                elif selectionAlgo == 1:			#Vigenère
                     try:
+                        texteChiffre = vigenereChiffre(texteClair, cle, 4)
                         self.TextTexteSortie.delete(1.0, END)
-                        texteChiffre = cesar(texteClair, int(cle), 4)
                         self.TextTexteSortie.insert(END, texteChiffre)
                         self.statut.set("Statut: Chiffrement effectué!")
                     except ValueError as e:
                         self.statut.set("Statut: Caractère invalide!")
-                    
-                else:
-                    self.statut.set("Statut: Clé invalide!")
-            elif selectionAlgo == 1:			#Vigenère
-                try:
-                    texteChiffre = vigenereChiffre(texteClair, cle, 4)
-                    self.TextTexteSortie.delete(1.0, END)
-                    self.TextTexteSortie.insert(END, texteChiffre)
-                    self.statut.set("Statut: Chiffrement effectué!")
-                except ValueError as e:
-                    self.statut.set("Statut: Caractère invalide!")
-        
-        
     
     def dechiffrer_texte(self):
         selectionAlgo = None
@@ -158,26 +164,188 @@ class menu_chiffrer_texte:
             if texteChiffre[-1] == "\n":
                 texteChiffre = texteChiffre[0:-1]
             cle = self.EntryCle.get()
-            if selectionAlgo == 0:	#Cesar
-                if str.isnumeric(cle):
+            if cle == "":
+                self.statut.set("Statut: veuillez entrer une clé!")
+            else:
+                if selectionAlgo == 0:	#Cesar
+                    if str.isnumeric(cle):
+                        try:
+                            self.TextTexteSortie.delete(1.0, END)
+                            texteClair = cesar(texteChiffre, -int(cle), 4)
+                            self.TextTexteSortie.insert(END, texteClair)
+                            self.statut.set("Statut: Déchiffrement effectué!")
+                        except ValueError as e:
+                            self.statut.set("Statut: Erreur lors du déchiffrement!")
+                        
+                    else:
+                        self.statut.set("Statut: Clé invalide!")
+                elif selectionAlgo == 1:			#Vigenère
                     try:
+                        texteClair = vigenereDechiffre(texteChiffre, cle, 4)
                         self.TextTexteSortie.delete(1.0, END)
-                        texteClair = cesar(texteChiffre, -int(cle), 4)
                         self.TextTexteSortie.insert(END, texteClair)
                         self.statut.set("Statut: Déchiffrement effectué!")
                     except ValueError as e:
                         self.statut.set("Statut: Erreur lors du déchiffrement!")
-                    
-                else:
-                    self.statut.set("Statut: Clé invalide!")
-            elif selectionAlgo == 1:			#Vigenère
+
+
+class menu_chiffrer_fichier:
+    def __init__(self):
+        #definition des elements de l'interface
+        self.frameContenu = Frame(mainWindow, borderwidth=2, relief=GROOVE)
+        self.frameContenu.pack(fill='y')
+        
+        self.boutonRetour = Button(self.frameContenu, text="Retour", command=self.retour_menu_principal)
+        self.labelDeplacement = Label(self.frameContenu ,text='Chiffrer un fichier')
+        self.labelTexteAChiffrer = Label(self.frameContenu, text='Emplacement du fichier à (dé)chiffrer')
+        self.EntryFichierAChiffrer = Entry(self.frameContenu, width=44)
+        self.labelCle = Label(self.frameContenu, text='Clé')
+        self.EntryCle = Entry(self.frameContenu, width=44)
+        self.ListBoxChiffrement = Listbox(self.frameContenu, height=2)
+        self.labelTexteSortie = Label(self.frameContenu, text='Emplacement du fichier (dé)chiffré')
+        self.EntryFichierSortie = Entry(self.frameContenu, width=44)
+        self.boutonChiffrer = Button(self.frameContenu, text="Chiffrer", command=self.chiffrer_texte)
+        self.boutonDechiffrer = Button(self.frameContenu, text="Déchiffrer", command=self.dechiffrer_texte)
+        self.statut = StringVar()
+        self.labelStatut = Label(self.frameContenu ,textvariable=self.statut)
+        self.statut.set("Statut:")
+        self.labelInformations = Label(self.frameContenu, text="Informations: Les clef pour le chiffrement de César sont des nombres entiers", justify=LEFT)        
+
+    def affichage(self):
+        nettoyer_fenetre()
+        global framePage
+        self.__init__() #on reinitialise la page
+        framePage = self.frameContenu
+        self.boutonRetour.grid(row=0,column=0, pady=10, sticky=W)
+        self.labelDeplacement.grid(row=0,column=1, columnspan=2, padx=10, pady=5)
+        self.labelTexteAChiffrer.grid(row=1,column=0, padx=10, pady=5, sticky=N)
+        self.EntryFichierAChiffrer.grid(row=1,column=1, columnspan=2, rowspan=2, pady=5, sticky=N)
+        self.labelCle.grid(row=3,column=0, padx=10, pady=5, sticky=N)
+        self.EntryCle.grid(row=3, column=1, columnspan=2, pady=5, sticky=N)
+        self.ListBoxChiffrement.grid(row=3, column=3, pady=5)
+        self.ListBoxChiffrement.insert(1, "César")
+        self.ListBoxChiffrement.insert(2, "Vigenère")
+        self.labelTexteSortie.grid(row=4,column=0, padx=10, pady=5, sticky=N)
+        self.EntryFichierSortie.grid(row=4, column=1, columnspan=2, padx=10, pady=5)
+
+        self.boutonChiffrer.grid(row=1,column=3, pady=5, sticky=N)
+        self.boutonDechiffrer.grid(row=2,column=3, pady=5, sticky=N)
+        self.labelStatut.grid(row=6, column=0, columnspan=3, pady=5, padx=10, sticky=W)
+        self.labelInformations.grid(row=7, column=0, columnspan=4, pady=5, padx=10, sticky=W)
+    
+    def retour_menu_principal(self):
+        global menu_principal
+        menu_principal.affichage()
+
+    def chiffrer_texte(self):
+        selectionAlgo = None
+        try:
+            selectionAlgo = self.ListBoxChiffrement.curselection()[0]
+        except Exception as e:
+            self.statut.set("Statut: Veuillez selectionner un algorithme de chiffrement!")
+
+        if selectionAlgo != None:
+            emplacementFichier = self.EntryFichierAChiffrer.get()
+            if emplacementFichier == "":
+                self.statut.set("Statut: veuillez préciser un fichier d'entrée!")
+            else:
+                texte=""
                 try:
-                    texteClair = vigenereDechiffre(texteChiffre, cle, 4)
-                    self.TextTexteSortie.delete(1.0, END)
-                    self.TextTexteSortie.insert(END, texteClair)
-                    self.statut.set("Statut: Déchiffrement effectué!")
-                except ValueError as e:
-                    self.statut.set("Statut: Erreur lors du déchiffrement!")
+                    fichier = codecs.open(emplacementFichier, encoding="utf-8", mode="r")
+                    texte = fichier.read()
+                    print(texte)
+                    fichier.close()
+                except:
+                    self.statut.set("Statut: fichier d'entrée introuvable!")
+                cle = self.EntryCle.get()
+                if cle == "":
+                    self.statut.set("Statut: veuillez entrer une clé!")
+                else:
+                    if selectionAlgo == 0:	#Cesar
+                        if str.isnumeric(cle):
+                            try:
+                                texteChiffre = cesar(texte, int(cle), 4)
+                                fichierSortie = self.EntryFichierSortie.get()
+                                if fichierSortie == "":
+                                    fichier = codecs.open(emplacementFichier, encoding="utf-8", mode="w")
+                                else:
+                                    fichier = codecs.open(fichierSortie, encoding="utf-8", mode="w")
+                                fichier.write(texteChiffre)
+                                fichier.close()
+                                self.statut.set("Statut: Chiffrement effectué!")
+                            except ValueError as e:
+                                self.statut.set("Statut: Caractère invalide!")
+                        
+                        else:
+                            self.statut.set("Statut: Clé invalide!")
+                    elif selectionAlgo == 1:			#Vigenère
+                        try:
+                            texteChiffre = vigenereChiffre(texte, cle, 4)
+                            fichierSortie = self.EntryFichierSortie.get()
+                            if fichierSortie == "":
+                                fichier = codecs.open(emplacementFichier, encoding="utf-8", mode="w")
+                            else:
+                                fichier = codecs.open(fichierSortie, encoding="utf-8", mode="w")
+                            fichier.write(texteChiffre)
+                            fichier.close()
+                            self.statut.set("Statut: Chiffrement effectué!")
+                        except ValueError as e:
+                            self.statut.set("Statut: Caractère invalide!")
+    
+    def dechiffrer_texte(self):
+        selectionAlgo = None
+        try:
+            selectionAlgo = self.ListBoxChiffrement.curselection()[0]
+        except Exception as e:
+            self.statut.set("Statut: Veuillez selectionner un algorithme de chiffrement!")
+
+        if selectionAlgo != None:
+            emplacementFichier = self.EntryFichierAChiffrer.get()
+            if emplacementFichier == "":
+                self.statut.set("Statut: veuillez préciser un fichier d'entrée!")
+            else:
+                texte=""
+                try:
+                    fichier = codecs.open(emplacementFichier, encoding="utf-8", mode="r")
+                    texte = fichier.read()
+                    fichier.close()
+                except:
+                    self.statut.set("Statut: fichier d'entrée introuvable!")
+                cle = self.EntryCle.get()
+                if cle == "":
+                    self.statut.set("Statut: veuillez entrer une clé!")
+                else:
+                    if selectionAlgo == 0:	#Cesar
+                        if str.isnumeric(cle):
+                            try:
+                                texteDechiffre = cesar(texte, -int(cle), 4)
+                                fichierSortie = self.EntryFichierSortie.get()
+                                if fichierSortie == "":
+                                    fichier = codecs.open(emplacementFichier, encoding="utf-8", mode="w")
+                                else:
+                                    fichier = codecs.open(fichierSortie, encoding="utf-8", mode="w")
+                                fichier.write(texteDechiffre)
+                                fichier.close()
+                                self.statut.set("Statut: Déchiffrement effectué!")
+                            except ValueError as e:
+                                self.statut.set("Statut: Caractère invalide!")
+                        
+                        else:
+                            self.statut.set("Statut: Clé invalide!")
+                    elif selectionAlgo == 1:			#Vigenère
+                        try:
+                            texteDechiffre = vigenereDechiffre(texte, cle, 4)
+                            fichierSortie = self.EntryFichierSortie.get()
+                            if fichierSortie == "":
+                                fichier = codecs.open(emplacementFichier, encoding="utf-8", mode="w")
+                            else:
+                                fichier = codecs.open(fichierSortie, encoding="utf-8", mode="w")
+                            fichier.write(texteDechiffre)
+                            fichier.close()
+                            self.statut.set("Statut: Déchiffrement effectué!")
+                        except ValueError as e:
+                            self.statut.set("Statut: Caractère invalide!")
+
 
 class menu_cryptographie_asymetrique:
     def __init__(self):
@@ -359,6 +527,7 @@ class menu_steganographie:
 #Code principal
 menu_principal = menu_principal()
 menu_chiffrer_texte = menu_chiffrer_texte()
+menu_chiffrer_fichier = menu_chiffrer_fichier()
 menu_cryptographie_asymetrique = menu_cryptographie_asymetrique()
 menu_steganographie = menu_steganographie()
 menu_principal.affichage()

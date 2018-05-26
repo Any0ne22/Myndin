@@ -1,4 +1,6 @@
 # coding: utf-8
+#Tom G.
+#https://github.com/Any0ne22/Myndin
 from tkinter import *
 from EZcipher import *
 from Cesar import *

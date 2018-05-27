@@ -90,7 +90,7 @@ def steganographie_lire(cheminImage):
             x = x + int(chaineBinaire[i*8 + 7]) * 1
             
             if(i > 0 and x == 0 and tableauOctets[i-1] == 129):
-                break
+                i = int((len(chaineBinaire) - len(chaineBinaire)%8)/8)
                 
             tableauOctets.append(x)
             

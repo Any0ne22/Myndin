@@ -4,6 +4,7 @@
 from tkinter import *
 from EZcipher import *
 from Cesar import *
+from CasseCesar import *
 from Vigenere2 import *
 from steganographie import *
 import codecs
@@ -36,6 +37,8 @@ class menu_principal:
         self.boutonChiffrerFichier = Button(self.frameContenu, text="Chiffrer un fichier", command=self.menu_chiffrer_fichier)
         self.boutonCryptoAsymetrique = Button(self.frameContenu, text="Cryptographie asymétrique", command=self.menu_cryptographie_asymetrique)
         self.boutonSteganographie = Button(self.frameContenu, text="Stéganographie", command=self.menu_steganographie)
+        self.boutonDecryptage = Button(self.frameContenu, text="Casser le code de César", command=self.menu_crack_cesar)
+        self.labelInfos=Label(self.frameContenu ,text='Denis L. / Pierre H. / Tom G.')
 
     def affichage(self):
         nettoyer_fenetre()
@@ -47,8 +50,9 @@ class menu_principal:
         self.boutonChiffrerFichier.grid(row=2,column=0, pady=10)
         self.boutonCryptoAsymetrique.grid(row=3,column=0, pady=10, padx=10)
         self.boutonSteganographie.grid(row=4,column=0, pady=10)
-        
-        
+        self.boutonDecryptage.grid(row=5,column=0, pady=10)
+        self.labelInfos.grid(row=6,column=0, pady=20)
+
     def menu_chiffrer_texte(self):
         global menu_chiffrer_texte
         menu_chiffrer_texte.affichage()
@@ -64,6 +68,10 @@ class menu_principal:
     def menu_steganographie(self):
         global menu_steganographie
         menu_steganographie.affichage()
+
+    def menu_crack_cesar(self):
+        global menu_crack_cesar
+        menu_crack_cesar.affichage()
     
 
 class menu_chiffrer_texte:
@@ -523,6 +531,54 @@ class menu_steganographie:
         except ValueError as e:
             self.statut.set("Statut: Erreur (" + str(e) + ")")
 
+class menu_crack_cesar:
+    def __init__(self):
+        #definition des elements de l'interface
+        self.frameContenu = Frame(mainWindow, borderwidth=2, relief=GROOVE)
+        self.frameContenu.pack(fill='y')
+        
+        self.boutonRetour = Button(self.frameContenu, text="Retour", command=self.retour_menu_principal)
+        self.labelDeplacement = Label(self.frameContenu ,text='Casser le code de César')
+        self.labelTexteAChiffrer = Label(self.frameContenu, text='Texte à décrypter')
+        self.TextTexteADecrypter = Text(self.frameContenu, height=5, width=50)
+        self.labelTexteSortie = Label(self.frameContenu, text='Texte déchiffré')
+        self.TextTexteSortie = Text(self.frameContenu, height=5, width=50)
+        self.boutonDecrypter = Button(self.frameContenu, text="Décrypter", command=self.decrypter_texte)
+        self.statut = StringVar()
+        self.labelStatut = Label(self.frameContenu ,textvariable=self.statut)
+        self.statut.set("Statut:")
+        self.labelInformations = Label(self.frameContenu, text="Informations: Cette méthode de déchiffrement a été optimisée pour la langue française et fonctionne mieux sur des messages longs.", justify=LEFT)        
+
+    def affichage(self):
+        nettoyer_fenetre()
+        global framePage
+        self.__init__() #on reinitialise la page
+        framePage = self.frameContenu
+        self.boutonRetour.grid(row=0,column=0, pady=10, sticky=W)
+        self.labelDeplacement.grid(row=0,column=1, columnspan=2, padx=10, pady=5)
+        self.labelTexteAChiffrer.grid(row=1,column=0, padx=10, pady=5, sticky=N)
+        self.TextTexteADecrypter.grid(row=1,column=1, columnspan=2, rowspan=2, pady=5)
+        self.labelTexteSortie.grid(row=3,column=0, padx=10, pady=5, sticky=N)
+        self.TextTexteSortie.grid(row=3, column=1, columnspan=2, pady=5)
+        self.boutonDecrypter.grid(row=1,column=3, pady=5, sticky=N)
+        self.labelStatut.grid(row=5, column=0, columnspan=3, pady=5, padx=10, sticky=W)
+        self.labelInformations.grid(row=6, column=0, columnspan=4, pady=5, padx=10, sticky=W)
+    
+    def retour_menu_principal(self):
+        global menu_principal
+        menu_principal.affichage()
+
+    def decrypter_texte(self):
+        texteClair = self.TextTexteADecrypter.get(1.0, END)
+        if (texteClair == ""):
+            self.statut.set("Statut: Veuillez renseigner le texte à décrypter!")
+        else:
+            if texteClair[-1] == "\n":
+                texteClair = texteClair[0:-1]
+            decalage, texteDecrypte = CasseCesar(texteClair)
+            self.TextTexteSortie.delete(1.0, END)
+            self.TextTexteSortie.insert(END, texteDecrypte)
+            self.statut.set("Statut: Clé trouvée: " + str(abs(decalage)))
         
 #Code principal
 menu_principal = menu_principal()
@@ -530,5 +586,6 @@ menu_chiffrer_texte = menu_chiffrer_texte()
 menu_chiffrer_fichier = menu_chiffrer_fichier()
 menu_cryptographie_asymetrique = menu_cryptographie_asymetrique()
 menu_steganographie = menu_steganographie()
+menu_crack_cesar = menu_crack_cesar()
 menu_principal.affichage()
 mainWindow.mainloop()

@@ -5,7 +5,7 @@ Ce dossier contient des fichiers permettant de tester Myndin
 Phrase chiffrée avec un décalage de 44:  
 vT}->[]]TÎ])_Îv-@;`Î3¼ºÎ7;-__-Îz¼Î-{Î"[?Îy¼  
 
-### Test du chiffre de Vignère
+### Test du chiffre de Vigenère
 Phrase chiffrée avec la clé 'Myndin01':  
 t£[);¹ÅÆs[[!=%Ä>0`¸d,{¬~q¬ ®u{}?u{  
 

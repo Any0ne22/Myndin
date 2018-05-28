@@ -6,7 +6,7 @@ def vigenereChiffre ( phraseAChiffrer, clef, alphabetChoisi) :
     alphabet1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
     alphabet2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
     alphabet3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' "
-    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöœ÷øùúûüýþÿ\n"
+    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöœ÷øùúûüýþÿ\n\r\t\\"
 	
     if alphabetChoisi == 0 : #Condition
         alphabet = alphabet0
@@ -27,7 +27,9 @@ def vigenereChiffre ( phraseAChiffrer, clef, alphabetChoisi) :
     for lettre in phraseAChiffrer: #Boucle "pour chaque lettre dans la phrase à chiffrer"
         positionLettre = alphabet.find(lettre) #On cherche la position des lettres de la phrase à chiffrer dans l'alphabet choisi
         if positionLettre == -1 :
-            raise ValueError("Caractère invalide") #Erreur si un caractère utilisé n'est pas dans l'alphabet choisi
+            print(str(numeroLettre) + ": " +lettre)
+            raise ValueError("Caractère invalide: " + lettre) #Erreur si un caractère utilisé n'est pas dans l'alphabet choisi
+            
         lettreClef = clef[numeroLettre%len(clef)] #Permet de récupérer la lettre dans la clef
         positionLettreClef = alphabet.find(lettreClef) #On cherche la position des lettres de la clef dans l'alphabet choisi 
         alphabetDecale = alphabet[positionLettreClef:] + alphabet[:positionLettreClef] #Décalage alphabet
@@ -44,7 +46,7 @@ def vigenereDechiffre ( phraseChiffree, clef, alphabetChoisi) :
     alphabet1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
     alphabet2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
     alphabet3 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789' "
-    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷ø0ùúûüýþÿ\n"
+    alphabet4 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~ ¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöœ÷øùúûüýþÿ\n\r\t\\"
 
 
     if alphabetChoisi == 0 : #Condition

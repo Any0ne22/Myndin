@@ -94,7 +94,7 @@ class menu_chiffrer_texte:
         self.statut = StringVar()
         self.labelStatut = Label(self.frameContenu ,textvariable=self.statut)
         self.statut.set("Statut:")
-        self.labelInformations = Label(self.frameContenu, text="Informations: Les clef pour le chiffrement de César sont des nombres entiers", justify=LEFT)        
+        self.labelInformations = Label(self.frameContenu, text="Informations: Les clefs pour le chiffrement de César sont des nombres entiers", justify=LEFT)        
 
     def affichage(self):
         nettoyer_fenetre()

@@ -4,4 +4,4 @@ Ce projet a pour but de permettre le chiffrement et le déchiffrement de donnée
 
 Le dossier [Tests](https://github.com/Any0ne22/Myndin/tree/master/Myndin/Tests) contient diverses phrases et documents chiffrés pour tester le projet.
 
-Développé par Tom Gouville, Denis Leforestier et Pierre Hvg.
+Développé par Tom Gouville, Denis Leforestier et Pierre Hvg, année 2017-2018.
